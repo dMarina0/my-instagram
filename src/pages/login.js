@@ -1,6 +1,7 @@
 import {Link, useHistory} from 'react-router-dom';
 import {useContext, useState, useEffect} from 'react';
 import FirebaseContext from '../context/firebase'
+import * as ROUTES from '../constants/routes';
 
 export default function LoginPage(){
     const history = useHistory();
@@ -11,7 +12,18 @@ export default function LoginPage(){
     const [error, setError] = useState('')
     const isInvalid = password === '' || emailAddress === '';
 
-    const handleLogin = ()=>{
+    const handleLogin = async (event)=>{
+        event.preventDefault();
+        try{
+            await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
+            history.push(ROUTES.DASHBOARD)
+        }
+        catch(err){
+            setEmailAddress('');
+            setPassword('');
+            setError(err.message)
+
+        }
 
     }
 

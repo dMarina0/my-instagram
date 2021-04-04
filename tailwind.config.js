@@ -3,6 +3,9 @@ module.exports = {
         removeDeprecatedGapUtilities: true
     },
     theme:{
+        fill : (theme) => ({
+            red: theme('color.red.primary')
+        }),
         colors: {
             white:'#ffffff',
             blue: {
@@ -11,6 +14,9 @@ module.exports = {
             black : {
                 light: '#005c98',
                 faded: '#00000059'
+            },
+            red:{
+                primary: "#ed4956"
             }
         }
     }
