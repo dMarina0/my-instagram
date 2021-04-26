@@ -19,7 +19,8 @@ export default function SignupPage(){
     const handleSignup = async (event)=>{
         event.preventDefault();
         const usernameExists =  await doesUsernameExist(username);
-        if(usernameExists){
+        console.log(`username exists ${usernameExists}`)
+        if(usernameExists.length === 0){
             try
             {
                 const createdUserResult = await firebase
@@ -31,13 +32,25 @@ export default function SignupPage(){
                 })
 
                 await firebase.firestore().collection('users').add({
-                    userId: createdUserResult.user.uid
-                })
+                    userId: createdUserResult.user.uid,
+                    username: username.toLowerCase(),
+                    fullName,
+                    emailAddress: emailAddress.toLowerCase(),
+                    following: [],
+                    dataCreated: Date.now()
+                });
+
+                history.push(ROUTES.DASHBOARD);
             }
             catch(err)
             {
                 setError(err.message);
+                setEmailAddress('');
+                setPassword('');
+                setFullName('');
             }
+        }else{
+            setError('The username is already taken, please try another')
         }
     }
 
@@ -99,6 +112,10 @@ export default function SignupPage(){
                         >
                             Sign up
                         </button>
+                        {
+                            error !== '' && 
+                            <p>{error}</p>
+                        }
                     </form>
                     </div>
                 <div className="flex flex-col items-center bg-white p-4 border border-gray-primary rounded mb-4">
