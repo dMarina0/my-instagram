@@ -19,7 +19,6 @@ export default function SignupPage(){
     const handleSignup = async (event)=>{
         event.preventDefault();
         const usernameExists =  await doesUsernameExist(username);
-        console.log(`username exists ${usernameExists}`)
         if(usernameExists.length === 0){
             try
             {
